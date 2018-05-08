@@ -20,9 +20,10 @@ public class StateTest {
             List<State> children = state.getChildren();
 
             assertEquals(children.size(), childrenTests[i]);
-
+            System.out.println(state);
             state = children.get(0);
         }
+        System.out.println(state);
         assertEquals(state.score[0] + state.score[1], 4);
 
         List<State> children = state.getChildren();
@@ -34,7 +35,7 @@ public class StateTest {
         State state = new State(5,5);
         for (int i = 0; i < 60; i++) {
             List<State> children = state.getChildren();
-
+            System.out.println(state);
             state = children.get(0);
         }
 
