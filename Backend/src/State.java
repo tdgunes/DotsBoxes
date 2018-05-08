@@ -76,13 +76,20 @@ public class State {
     public List<State> getChildren() {
         List<State> children = new ArrayList<State>();
         boolean[] flags = new boolean[dots.length];
+        boolean totalFlag = false;
         for (int i = 0; i < dots.length; i++) {
             Dot dot = dots[i];
             for (Line line : dot.lines) {
                 if (line == Line.FULL) {
                     flags[i] = true;
+                    totalFlag = true;
                     break;
                 }
+            }
+        }
+        if (!totalFlag) {
+            for (int i = 0; i < dots.length; i++) {
+                flags[i] = true;
             }
         }
 
@@ -93,7 +100,8 @@ public class State {
         for (int i = 0; i < dots.length; i++) {
             for (int j = 0; j < 2; j++) {
                 int target = i + array[j];
-                if (flags[i] || flags[target]) {
+                if (dots[i].lines[j] == Line.NONE
+                               && (flags[i] || flags[target])) {
                     State child = new State(this);
                     child.dots[i].lines[j] = Line.FULL;
                     child.dots[target].lines[j+2] = Line.FULL;
@@ -115,6 +123,7 @@ public class State {
         rows = Integer.valueOf(tokenizer.nextToken());
         cols = Integer.valueOf(tokenizer.nextToken());
         turn = Integer.valueOf(tokenizer.nextToken());
+        score = new int[2];
         score[0] = Integer.valueOf(tokenizer.nextToken());
         score[1] = Integer.valueOf(tokenizer.nextToken());
         dots = new Dot[(rows + 1)*(cols + 1)];
