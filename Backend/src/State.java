@@ -138,6 +138,10 @@ public class State {
         }
     }
 
+    public boolean isGameFinished() {
+        return (score[0] + score[1]) >= (rows*cols);
+    }
+
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder("");
