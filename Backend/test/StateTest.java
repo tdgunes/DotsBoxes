@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -56,5 +58,86 @@ public class StateTest {
         assertTrue(children.isEmpty());
     }
 
+    @Test
+    public void testRandomAgents() throws IOException {
+
+
+        State state = new State(2, 2);
+        FileWriter writer = new FileWriter("../data/2x2-randomagents.csv");
+        RandomAgent agentZero = new RandomAgent();
+        RandomAgent agentOne = new RandomAgent();
+
+
+        while (!state.isGameFinished()) {
+            System.out.println(state);
+            writer.write(state.toString() + "\n");
+            state = agentZero.doMove(state);
+
+            if (state.isGameFinished()) break;
+
+            System.out.println(state);
+            writer.write(state.toString() + "\n");
+            state = agentOne.doMove(state);
+        }
+        System.out.println(state);
+        writer.write(state.toString() + "\n");
+
+        System.out.println(state.score[0]);
+        System.out.println(state.score[1]);
+        writer.close();
+    }
+
+    @Test
+    public void testRandomOneGreedy() throws IOException {
+        State state = new State(2, 2);
+        FileWriter writer = new FileWriter("../data/2x2-randomonegreedy.csv");
+        Agent agentZero = new OneGreedyAgent();;//new RandomAgent();
+        Agent agentOne = new RandomAgent();//new OneGreedyAgent();
+
+
+        while (!state.isGameFinished()) {
+            System.out.println(state);
+            writer.write(state.toString() + "\n");
+            state = agentZero.doMove(state);
+
+            if (state.isGameFinished()) break;
+
+            System.out.println(state);
+            writer.write(state.toString() + "\n");
+            state = agentOne.doMove(state);
+        }
+        System.out.println(state);
+        writer.write(state.toString() + "\n");
+
+        System.out.println(state.score[0]);
+        System.out.println(state.score[1]);
+        writer.close();
+    }
+
+    @Test
+    public void testRandomSearch() throws IOException {
+        State state = new State(9, 9);
+        FileWriter writer = new FileWriter("../data/2x2-randomonegreedy.csv");
+        Agent agentZero = new RandomAgent();
+        Agent agentOne = new SearchAgent();
+
+        while (!state.isGameFinished()) {
+            System.out.println(state);
+            writer.write(state.toString() + "\n");
+            state = agentZero.doMove(state);
+
+            if (state.isGameFinished()) break;
+
+            System.out.println(state);
+            writer.write(state.toString() + "\n");
+            state = agentOne.doMove(state);
+        }
+        System.out.println(state);
+        writer.write(state.toString() + "\n");
+
+        System.out.println(state.score[0]);
+        System.out.println(state.score[1]);
+        writer.close();
+    }
 
 }
