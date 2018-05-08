@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -73,6 +74,7 @@ public class State {
 
 
     public List<State> getChildren() {
+        List<State> children = new ArrayList<State>();
         boolean[] flags = new boolean[dots.length];
         for (int i = 0; i < dots.length; i++) {
             Dot dot = dots[i];
@@ -89,21 +91,22 @@ public class State {
         array[1] = 1;
 
         for (int i = 0; i < dots.length; i++) {
-            Dot dot = dots[i];
-
             for (int j = 0; j < 2; j++) {
                 int target = i + array[j];
                 if (flags[i] || flags[target]) {
                     State child = new State(this);
                     child.dots[i].lines[j] = Line.FULL;
                     child.dots[target].lines[j+2] = Line.FULL;
-
+                    boolean flag = child.updateScore(i, j == 1);
+                    if (!flag) {
+                        child.turn = 1 - child.turn;
+                    }
+                    children.add(child);
                 }
             }
-
         }
 
-        return null;
+        return children;
     }
 
     public State(String str) {
@@ -147,26 +150,47 @@ public class State {
     }
 
 
-    public boolean updateScore (int dotA, int dotB, boolean horizontal) {
+    public boolean updateScore (int dotId, boolean horizontal) {
         int[] ray = new int[4];
         ray[0] = -cols-1;
         ray[1] = 1;
         ray[2] = cols+1;
         ray[3] = -1;
 
-        int dotC;
-        int dotD;
-        if (horizontal) {
-            dotC = dotA - cols - 1;
-            dotD = dotB - cols - 1;
+        boolean flag = true;
+        boolean flag2 = true;
 
-            if (dotC >= 0) {
-
+        int i = dotId;
+        int j = 0;
+        do {
+            if (dots[i].lines[j] != Line.FULL) {
+                flag = false;
+                break;
             }
-        }
-        else {
+            i += ray[j];
+            j = (j + 1) % 4;
+        } while (i != dotId);
 
+        if (flag) {
+            score[turn]++;
         }
+
+        i = dotId;
+        j = (horizontal)? 1: 3;
+        do {
+            if (dots[i].lines[j] != Line.FULL) {
+                flag2 = false;
+                break;
+            }
+            i += ray[j];
+            j = (j + 1) % 4;
+        } while (i != dotId);
+
+        if (flag2) {
+            score[turn]++;
+        }
+
+        return flag || flag2;
     }
 
 
