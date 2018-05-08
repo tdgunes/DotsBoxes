@@ -107,7 +107,7 @@ public class State {
                     child.dots[target].lines[j+2] = Line.FULL;
                     boolean flag = child.updateScore(i, j == 1);
                     if (!flag) {
-                        child.turn = 1 - child.turn;
+                        child.turn = 1 - this.turn;
                     }
                     children.add(child);
                 }
