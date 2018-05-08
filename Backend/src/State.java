@@ -40,6 +40,7 @@ public class State {
     public State(State s) {
         this.rows = s.rows;
         this.cols = s.cols;
+        this.turn = s.turn;
         score = new int[2];
         score[0] = s.score[0];
         score[1] = s.score[1];
