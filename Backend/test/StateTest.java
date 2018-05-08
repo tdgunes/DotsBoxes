@@ -116,9 +116,9 @@ public class StateTest {
 
     @Test
     public void testRandomSearch() throws IOException {
-        State state = new State(9, 9);
-        FileWriter writer = new FileWriter("../data/2x2-randomonegreedy.csv");
-        Agent agentZero = new RandomAgent();
+        State state = new State(10, 10);
+        FileWriter writer = new FileWriter("../data/3.csv");
+        Agent agentZero = new OneGreedyAgent();
         Agent agentOne = new SearchAgent();
 
         while (!state.isGameFinished()) {
